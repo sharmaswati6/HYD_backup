@@ -1,0 +1,7 @@
+configure net on ubuntu VM
+============================
+
+export http_proxy=http://10.138.77.10:3128
+export https_proxy=https://10.138.77.10:3128
+
+scp -r tcs@10.138.77.57:/etc/apt/apt.conf /etc/apt/

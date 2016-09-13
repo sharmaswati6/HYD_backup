@@ -1,0 +1,614 @@
+redmine installation:
+	https://www.redmine.org/projects/redmine/wiki/HowTo_Install_Redmine_on_Ubuntu_step_by_step
+	
+	install mysql before installing redmine 
+	intsall bundler with http proxy
+	after installing again install mysql server and client 
+	restart apache2 and mysql
+
+gerrit installation :
+	https://www.digitalocean.com/community/tutorials/how-to-install-gerrit-on-an-ubuntu-cloud-server
+	gerrit/etc/gerrit.conf file
+		change port num to 
+		[auth]
+	        type = DEVELOPMENT_BECOME_ANY_ACCOUNT
+
+tcs@3F4-0012B:~$ ssh-keygen -t rsa
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/tcs/.ssh/id_rsa): /home/tcs/.ssh/id_rsa
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in /home/tcs/.ssh/id_rsa.
+Your public key has been saved in /home/tcs/.ssh/id_rsa.pub.
+The key fingerprint is:
+45:48:f3:ff:f1:9f:8d:53:bd:b2:ce:65:78:93:9a:55 tcs@3F4-0012B
+The key's randomart image is:
++--[ RSA 2048]----+
+|       .o..      |
+|        .+       |
+|          o      |
+|         . .     |
+|        S   . . E|
+|             ..o=|
+|             ..Oo|
+|            ..Oo=|
+|            .*+oo|
++-----------------+
+tcs@3F4-0012B:~$  ssh-copy-id tcs@10.138.97.193
+The authenticity of host '10.138.97.193 (10.138.97.193)' can't be established.
+ECDSA key fingerprint is 33:1b:57:5a:75:d9:c9:f3:56:ea:ee:68:3c:e5:7b:90.
+Are you sure you want to continue connecting (yes/no)? yes
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+tcs@10.138.97.193's password: 
+
+Number of key(s) added: 1
+
+Now try logging into the machine, with:   "ssh 'tcs@10.138.97.193'"
+and check to make sure that only the key(s) you wanted were added.
+
+tcs@3F4-0012B:~$ b
+
+
+
+jenkins installation:
+	https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins+on+Ubuntu
+
+
+gitlab installtion 
+	https://about.gitlab.com/downloads/#ubuntu1404
+
+
+
+zabbix :
+	https://www.zabbix.com/documentation/2.4/manual/installation/install_from_packages	
+
+
+docker :
+	https://docs.docker.com/engine/installation/ubuntulinux/
+
+	
+
+
+backup images in 234 amd 157
+
+
+
+
+
+
+Setting up Devstack
+
+Devstack is a shell script used to deploy a complete OpenStack development environment. The Devstack script installs all the dependencies required to run OpenStack so there is no need to install anything separately. It is a good place to start for beginners starting with OpenStack development.
+
+Open the console and clone the devstack repo which contains a script that will install OpenStack. You should clone this repo where you want your devstack to reside. This command will fetch the devstack repo to your local machine.
+
+ $ git clone https://github.com/openstack-dev/devstack.git
+Now you will find a devstack directory where you cloned the repo
+
+ $ cd devstack
+Run the script to install OpenStack
+
+ $ ./stack.sh
+The script will take some time to build. It will ask you to enter passwords for the default services enabled in the script.
+
+After it is done it will return a URL for horizon. Open that link in your browser and you can acess the OpenStack Dashboard!
+
+By default you get two usernames-admin and demo. The password will be the password you set for keystone(which is the identity service provided by OpenStack) which you can see in the local.config file in the devstack directory too.
+
+Here you are, done with the basic configuration for OpenStack!
+
+(Reminder - Don`t forget to take a snapshot of the virtual machine once you have reached this point!)
+
+What the scripts do?
+
+Now if you take a look at your devstack directory you will find some very useful scripts. Here I will tell you how these scripts are used.
+
+stack.sh 
+We have run this script initially to install Openstack. This script allows you to specify configuration options of what git repositories to use, enabled services, network configuration and various passwords. You need to run this script everytime you make any change to the OpenStack configuration or enable any new service.
+
+unstack.sh 
+Stops all the services started by stack.sh (mostly) mysql and rabbit are left running as OpenStack code refreshes do not require them to be restarted. Note that any changes made to the code should remain intact after running unstack.sh unless set otherwise.
+
+rejoin-stack.sh 
+This script rejoins an existing screen, or re-creates a screen session from a previous run of stack.sh. This means that if you have previously run stack.sh and you want to rejoin the session you run rejoin-stack.sh. Doing this restores all the data from the previous sessions. So do not be scared of loosing your data after rebooting your machine. 
+Just run ./unstack.sh 
+Then, reboot your machine
+When you want to join the session again run ./rejoin-stack.sh
+And you have all your data in place! You can check by accessing the dashboard on the same URL as before.
+
+run_test.sh
+OpenStack havana release added a tool called bash8 in order to do style checking in Devstack. This tool is run on the entire project using run_test.sh script. This will give information regarding any stray white spaces.
+
+clean.sh
+Does its best to eradicate traces of a Grenade run except for the following: - both base and target code repos are left alone - packages (system and pip) are left alone. This is used if you want to erase all the OpenStack related files from your system.
+
+exercise.sh
+This script runs all the examples present in the devstack/exercises directory and reports on the results. The exercises directory contains the test scripts used to validate and demonstrate some OpenStack functions. These scripts know how to exit early or skip services that are not enabled.
+
+Configuring services in OpenStack
+
+The stackrc is the primary configuration file for DevStack which contains all of the settings that control the services started and the repositories used to download the source for those services. stackrc sources the local.config to perform the default overrides.
+
+By default the following services are enabled when you install OpenStack using Devstack:
+
+Nova (API, Certificate, Object Store, Compute, Network, Scheduler, VNC proxies, Certificate Authentication)
+Cinder (Scheduler, API, Volume)
+Glance (API and Registry)
+Horizon
+Keystone
+MYSQL
+RabbitMQ
+Tempest
+Additional services that are not enabled by default can be enabled in the local.config. local.config should be copied from devstack/samples to the main devstack folder. Any tweaks to the configuration like disabling any service can be done from the local.config
+
+Now we will see how to enable the other services in OpenStack. Some services that are not enabled by default are given below. Select the required service and add the respective lines to your local.config.
+
+Swift - Object Storage
+
+    ENABLED_SERVICES+=,s-proxy,s-object,s-container,s-account
+Ceilometer - Metering Service
+
+    ENABLED_SERVICES+=,ceilometer-acompute,ceilometer-acentral,ceilometer-collector,ceilometer-api
+    ENABLED_SERVICES+=,ceilometer-alarm-notify,ceilometer-alarm-eval
+Neutron - Networking Service
+
+    ENABLED_SERVICES+=,q-svc,q-agt,q-dhcp,q-l3,q-meta,neutron
+Heat - Orchestration Service
+
+    ENABLED_SERVICES+=,heat,h-api,h-api-cfn,h-api-cw,h-eng
+Apache fronted for WSGI
+
+    APACHE_ENABLED_SERVICES+=keystone,swift
+Enable Logging
+
+You can also enable logging in Devstack, as it does not log by default.
+
+    LOGFILE=/opt/stack/logs/stack.sh.log
+    VERBOSE=True
+    LOG_COLOR=True
+    SCREEN_LOGDIR=/opt/stack/logs
+Reclone each time
+
+If you want to reclone the Devstack repo each time you run stack.sh then you can enable reclone too in the local.config.
+
+    RECLONE=yes
+After adding the required service you will need to run stack.sh again in order to enable the service. To check if the service is enables you can check the OpenStack Dashboard admin tab -> System Info -> services.
+
+Where to find the code?
+
+Once you have all the setup running you might want to take a look at the code running behind all this. All the code related to OpenStack will be found here in
+
+    /opt/stack
+Now you can start exploring the code right away!
+
+
+
+
+
+
+export http_proxy=http://10.138.77.140:3128/
+export ftp_proxy=ftp://10.138..77.140:3128/
+export socks_proxy=socks://10.138.77.140:3128/
+export https_proxy=https://10.138.77.140:3128/
+export no_proxy=127.0.0.1,127.0.1.1,10.138.77.57
+
+
+to kill a process 
+kill -9 $(ps -e | grep 'processname' | awk '{print $1}')
+
+
+sudo docker run --detach \
+    --hostname gitlab.example.com \
+    --publish 8443:443 --publish 8081:80 --publish 2223:22 \
+    --name gitlab \
+    --restart always \
+    --volume /srv/gitlab/config:/etc/gitlab \
+    --volume /srv/gitlab/logs:/var/log/gitlab \
+    --volume /srv/gitlab/data:/var/opt/gitlab \
+    gitlab/gitlab-ce:latest
+
+
+
+
+
+
+
+change ip in the localrc file
+offline=true
+export no_proxy='hostip'
+stack.sh
+
+First delete all the existing networks in the openstack:both public and private then delete existing router router1.
+
+        |                               |
+   p    |                               |   p
+   u    |                               |   r
+   b    |                               |   i
+   l    |  gateway  Router  interface   |   v
+   i    |                               |   a
+   c    |                               |   t
+        |                               |   e
+        |                               |
+ 
+
+neutron net-list
++--------------------------------------+---------+----------------------------------------------------+
+| id                                   | name    | subnets                                            |
++--------------------------------------+---------+----------------------------------------------------+
+| 3c561f3e-9687-4b99-a5ac-9a5503498cb0 | public  | 78fcea01-bbb8-4e8f-957e-631d378b1bbc 172.24.4.0/24 |
+| c593ff22-62f4-464b-b484-07936d92c6d2 | private | 53090a17-d2a8-4ca0-bd3a-1612025c4bcb 10.0.0.0/24   |
++--------------------------------------+---------+----------------------------------------------------+
+
+neutron router-list
+
++--------------------------------------+---------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-------------+-------+
+| id                                   | name    | external_gateway_info                                                                                                                                                                  | distributed | ha    |
++--------------------------------------+---------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-------------+-------+
+| 845a77ad-ddaa-44be-bc3b-c2c63c25af44 | router1 | {"network_id": "3c561f3e-9687-4b99-a5ac-9a5503498cb0", "enable_snat": true, "external_fixed_ips": [{"subnet_id": "78fcea01-bbb8-4e8f-957e-631d378b1bbc", "ip_address": "172.24.4.2"}]} | False       | False |
++--------------------------------------+---------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-------------+-------+
+
+ neutron router-gateway-clear router1
+       Removed gateway from router router1
+
+neutron net-delete <public n/w id>
+   Deleted network: 3c561f3e-9687-4b99-a5ac-9a5503498cb0
+
+neutron subnet-list
+  +--------------------------------------+----------------+-------------+--------------------------------------------+
+| id                                   | name           | cidr        | allocation_pools                           |
++--------------------------------------+----------------+-------------+--------------------------------------------+
+| 53090a17-d2a8-4ca0-bd3a-1612025c4bcb | private-subnet | 10.0.0.0/24 | {"start": "10.0.0.2", "end": "10.0.0.254"} |
++--------------------------------------+----------------+-------------+--------------------------------------------+
+
+ neutron subnet-delete <private subnet id>
+      Deleted subnet: 53090a17-d2a8-4ca0-bd3a-1612025c4bcb
+
+ neutron net-delete private
+      Deleted network: private
+
+neutron router-delete router1
+      Deleted router: router1
+
+Create new n/ws:both public and private and also new router
+
+  neutron net-create public --shared --router:external
+   Created a new network:
++---------------------------+--------------------------------------+
+| Field                     | Value                                |
++---------------------------+--------------------------------------+
+| admin_state_up            | True                                 |
+| id                        | 8de52066-22ff-4051-8de2-7347c16a19f7 |
+| name                      | public                               |
+| provider:network_type     | vxlan                                |
+| provider:physical_network |                                      |
+| provider:segmentation_id  | 1001                                 |
+| router:external           | True                                 |
+| shared                    | True                                 |
+| status                    | ACTIVE                               |
+| subnets                   |                                      |
+| tenant_id                 | 1e6540e62aad47cdbafa113b5f5ab97e     |
++---------------------------+--------------------------------------+
+ Install arp-scan
+ sudo apt-get install arp-scan
+ sudo arp-scan -I eth0 10.138.97.0/25;  --> gives the allocated ips. Find the unallocated ip to be used as floatingip.
+ Here 10.138.97.135 and 10.138.97.136 are unallocated ips.
+
+neutron subnet-create public --name public-subnet --allocation-pool start=10.138.97.135,end=10.138.97.136 --disable-dhcp --gateway <gateway ip 10.138.97.130> <cidr 10.138.97.128/25> 
+
+o/p: 
+
+Created a new subnet:
++-------------------+----------------------------------------------------+
+| Field             | Value                                              |
++-------------------+----------------------------------------------------+
+| allocation_pools  | {"start": "10.138.97.135", "end": "10.138.97.136"} |
+| cidr              | 10.138.97.128/25                                   |
+| dns_nameservers   |                                                    |
+| enable_dhcp       | False                                              |
+| gateway_ip        | 10.138.97.130                                      |
+| host_routes       |                                                    |
+| id                | 1dfca90b-a8c0-4603-bfc1-af58fa914906               |
+| ip_version        | 4                                                  |
+| ipv6_address_mode |                                                    |
+| ipv6_ra_mode      |                                                    |
+| name              | public-subnet                                      |
+| network_id        | 8de52066-22ff-4051-8de2-7347c16a19f7               |
+| tenant_id         | 1e6540e62aad47cdbafa113b5f5ab97e                   |
++-------------------+----------------------------------------------------+
+
+neutron router-create router1
+ o/p   created new router:
+         id:1c889832-b41b-408e-9a99-c37fdee075f2
+
+ neutron router-gateway-set <router id 1c889832-b41b-408e-9a99-c37fdee075f2> <public n/w id 8de52066-22ff-4051-8de2-7347c16a19f7>
+   o/p  Set gateway for router 1c889832-b41b-408e-9a99-c37fdee075f2
+
+neutron net-create private
+
+o/p:
+
+Created a new network:
++---------------------------+--------------------------------------+
+| Field                     | Value                                |
++---------------------------+--------------------------------------+
+| admin_state_up            | True                                 |
+| id                        | 86ccf989-8b60-406f-813a-f79cf5f97130 |
+| name                      | private                              |
+| provider:network_type     | vxlan                                |
+| provider:physical_network |                                      |
+| provider:segmentation_id  | 1028                                 |
+| router:external           | False                                |
+| shared                    | False                                |
+| status                    | ACTIVE                               |
+| subnets                   |                                      |
+| tenant_id                 | 1e6540e62aad47cdbafa113b5f5ab97e     |
++---------------------------+--------------------------------------+
+
+
+
+neutron subnet-create private --name subnet-private 10.0.0.0/24
+
+o/p:
+
+Created a new subnet:
++-------------------+--------------------------------------------+
+| Field             | Value                                      |
++-------------------+--------------------------------------------+
+| allocation_pools  | {"start": "10.0.0.2", "end": "10.0.0.254"} |
+| cidr              | 10.0.0.0/24                                |
+| dns_nameservers   |                                            |
+| enable_dhcp       | True                                       |
+| gateway_ip        | 10.0.0.1                                   |
+| host_routes       |                                            |
+| id                | c49bc901-2fa1-4db1-9148-c7f675a44d62       |
+| ip_version        | 4                                          |
+| ipv6_address_mode |                                            |
+| ipv6_ra_mode      |                                            |
+| name              | subnet-private                             |
+| network_id        | 86ccf989-8b60-406f-813a-f79cf5f97130       |
+| tenant_id         | 1e6540e62aad47cdbafa113b5f5ab97e           |
++-------------------+--------------------------------------------+
+
+neutron net-list
+
+o/p:
+
++--------------------------------------+---------+-------------------------------------------------------+
+| id                                   | name    | subnets                                               |
++--------------------------------------+---------+-------------------------------------------------------+
+| 86ccf989-8b60-406f-813a-f79cf5f97130 | private | c49bc901-2fa1-4db1-9148-c7f675a44d62 10.0.0.0/24      |
+| 8de52066-22ff-4051-8de2-7347c16a19f7 | public  | 1dfca90b-a8c0-4603-bfc1-af58fa914906 10.138.97.128/25 |
++--------------------------------------+---------+-------------------------------------------------------+
+
+neutron router-interface-add 1c889832-b41b-408e-9a99-c37fdee075f2 c49bc901-2fa1-4db1-9148-c7f675a44d62
+   o/p: Added interface fcc8c7cc-b4be-4146-9e8d-7c91e9734443 to router 1c889832-b41b-408e-9a99-c37fdee075f2.
+
+
+neutron floatingip-create public
+
+o/p:
+
+Created a new floatingip:
++---------------------+--------------------------------------+
+| Field               | Value                                |
++---------------------+--------------------------------------+
+| fixed_ip_address    |                                      |
+| floating_ip_address | 10.138.97.136                        |
+| floating_network_id | 8de52066-22ff-4051-8de2-7347c16a19f7 |
+| id                  | af782ddb-b255-4dee-93fa-42be42b9faff |
+| port_id             |                                      |
+| router_id           |                                      |
+| status              | DOWN                                 |
+| tenant_id           | 1e6540e62aad47cdbafa113b5f5ab97e     |
++---------------------+--------------------------------------+
+
+neutron floatingip-list
+
+o/p:
+
++--------------------------------------+------------------+---------------------+---------+
+| id                                   | fixed_ip_address | floating_ip_address | port_id |
++--------------------------------------+------------------+---------------------+---------+
+| af782ddb-b255-4dee-93fa-42be42b9faff |                  | 10.138.97.136       |         |
++--------------------------------------+------------------+---------------------+---------+
+
+ nova boot --image f8bbc771-a522-45de-9a0b-2b9fc03b844d --flavor 1 --nic net-id=86ccf989-8b60-406f-813a-f79cf5f97130 vm1
+
+ neutron floatingip-associate af782ddb-b255-4dee-93fa-42be42b9faff ff54dd75-b7a9-4b4b-8d61-c219506526ea
+  o/p : Associated floating IP af782ddb-b255-4dee-93fa-42be42b9faff
+
+
+ neutron floatingip-list
++--------------------------------------+------------------+---------------------+--------------------------------------+
+| id                                   | fixed_ip_address | floating_ip_address | port_id                              |
++--------------------------------------+------------------+---------------------+--------------------------------------+
+| af782ddb-b255-4dee-93fa-42be42b9faff | 10.0.0.2         | 10.138.97.136       | ff54dd75-b7a9-4b4b-8d61-c219506526ea |
++--------------------------------------+------------------+---------------------+--------------------------------------+
+
+changing ip from eth0 to br-ex
+
+sudo ovs-vsctl show
+
+ Bridge br-ex
+        Port "qg-f14314f4-af"
+            Interface "qg-f14314f4-af"
+                type: internal
+        Port br-ex
+            Interface br-ex
+                type: internal
+
+
+sudo ovs-vsctl add-port br-ex eth0
+
+Bridge br-ex
+        Port "qg-f14314f4-af"
+            Interface "qg-f14314f4-af"
+                type: internal
+        Port "eth0"
+            Interface "eth0"
+        Port br-ex
+            Interface br-ex
+                type: internal
+
+
+if shutoff vm
+
+sudo ip a d <ip of openstack host 10.138.97.222/25> dev eth0
+
+sudo ip a a 10.138.97.222/25 dev br-ex
+
+sudo ip r a <gateway 10.138.97.130> default via dev br-ex
+ 
+ping <floatingip 10.138.97.136>
+PING 10.138.97.136 (10.138.97.136) 56(84) bytes of data.
+64 bytes from 10.138.97.136: icmp_seq=1 ttl=63 time=5.29 ms
+64 bytes from 10.138.97.136: icmp_seq=2 ttl=63 time=2.42 ms
+
+
+
+changes in myproject-> release management
+
+floatingip in vm_launch1.sh and vm_terminate.sh
+ips in base.html and side_4.html
+template_dirs and static_dirs in settings.py file
+
+
+Openstack image:
+10.138.97.227:~/openstack_compressed.qcow2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+sudo ip a d 10.138.77.57/24 dev br0
+tcs@3F4-0012B:~$ sudo ip a a 10.138.77.157/24 dev br0
+tcs@3F4-0012B:~$ sudo ip r a default via 10.138.77.130 dev br0
+tcs@3F4-0012B:~$ 
+tcs@3F4-0012B:~$ 
+tcs@3F4-0012B:~$ sudo vim /etc/resolv.conf 
+tcs@3F4-0012B:~$ 
+tcs@3F4-0012B:~$ 
+tcs@3F4-0012B:~$ env | grep proxy
+http_proxy=http://10.138.97.140:3128/
+ftp_proxy=ftp://10.138.97.140:3128/
+all_proxy=socks://10.138.77.140:3128/
+socks_proxy=socks://10.138.97.140:3128/
+https_proxy=https://10.138.97.140:3128/
+no_proxy=127.0.0.1,127.0.1.1,10.138.97.193
+tcs@3F4-0012B:~$ unset http_proxy https_proxy ftp_proxy socks_proxy all_proxy 
+tcs@3F4-0012B:~$ env | grep proxy
+no_proxy=127.0.0.1,127.0.1.1,10.138.97.193
+tcs@3F4-0012B:~$ sudo mv /etc/apt/apt.conf ~/.
+tcs@3F4-0012B:~$ 
+tcs@3F4-0012B:~$ 
+tcs@3F4-0012B:~$ sudo vim /etc/resolv.conf
+tcs@3F4-0012B:~$ 
+
+
+
+
+1)Remove all images
+
+	$ docker images -a -q | xargs docker rmi
+
+2)Remove Stopped Containers
+
+	$ docker ps -a | awk '/Exit/ {print $1}' | xargs docker rm
+
+3)Remove all containers (including running containers)
+
+	$ docker ps -q -a | xargs docker rm
+4) to know the container ip 
+	$(sudo docker inspect --format '{{ .NetworkSettings.IPAddress }}' $containerid)
+
+
+sudo docker run --detach \
+    --hostname gitlab.example.com \
+    --publish 443:443 --publish 8081:80 --publish 2223:22 \
+    --name gitlab \
+    --restart always \
+    --volume /srv/gitlab/config:/etc/gitlab \
+    --volume /srv/gitlab/logs:/var/log/gitlab \
+    --volume /srv/gitlab/data:/var/opt/gitlab \
+    gitlab/gitlab-ce:latest
+
+http_proxy="http://10.138.77.140:3128/"
+export https_proxy="https://10.138.77.140:3128/"
+export ftp_proxy="ftp://10.138.77.140:3128/"
+export socks_proxy="socks://10.138.77.140:3128/"
+export no_proxy="127.0.0.1,127.0.1.1,10.138.77.57"
+
+
+sync && echo 3 | sudo tee /proc/sys/vm/drop_caches
+
+
+to get ips in ipv6 
+docker daemon --ipv6 --fixed-cidr-v6="fd15:4ba5:5a2b:100a::/64
+or
+DOCKER_OPTS="--dns 8.8.8.8 --dns 8.8.4.4 --ipv6 --fixed-cidr-v6=fd15:4ba5:5a2b:100a::/64"
+
+http://www.debug-all.com/?p=128
+
+
+
+installing docker 
+	https://docs.docker.com/engine/installation/linux/ubuntulinux/
+docker commands
+	https://docs.docker.com/engine/reference/commandline/cli/
+docker netwotking 
+	https://docs.docker.com/engine/userguide/networking/dockernetworks/
+docker compose 
+	https://docs.docker.com/compose/install/
+usecase:
+1)how to install docker in ubuntu
+2)launch a container using ubuntu image
+3)how to login into a docker contianer
+4)creating and running a sample application in container
+5)attaching a volume
+6)creating a bridge in docker container
+7)how to access contianer from a remote system
+8)how to create a docker file
+9)docker GUI
+10)configuring docker hosts and containers with GUI
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

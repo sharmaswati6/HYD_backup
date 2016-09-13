@@ -1,0 +1,42 @@
+1)Remove all images
+
+	$ docker images -a -q | xargs docker rmi
+
+2)Remove Stopped Containers
+
+	$ docker ps -a | awk '/Exit/ {print $1}' | xargs docker rm
+
+3)Remove all containers (including running containers)
+
+	$ docker ps -q -a | xargs docker rm
+4) to know the container ip 
+	$(sudo docker inspect --format '{{ .NetworkSettings.IPAddress }}' $containerid)
+
+
+sudo docker run --detach \
+    --hostname gitlab.example.com \
+    --publish 443:443 --publish 8081:80 --publish 2223:22 \
+    --name gitlab \
+    --restart always \
+    --volume /srv/gitlab/config:/etc/gitlab \
+    --volume /srv/gitlab/logs:/var/log/gitlab \
+    --volume /srv/gitlab/data:/var/opt/gitlab \
+    gitlab/gitlab-ce:latest
+
+http_proxy="http://10.138.77.140:3128/"
+export https_proxy="https://10.138.77.140:3128/"
+export ftp_proxy="ftp://10.138.77.140:3128/"
+export socks_proxy="socks://10.138.77.140:3128/"
+export no_proxy="127.0.0.1,127.0.1.1,10.138.77.57"
+
+
+sync && echo 3 | sudo tee /proc/sys/vm/drop_caches
+
+
+to get ips in ipv6 
+docker daemon --ipv6 --fixed-cidr-v6="fd15:4ba5:5a2b:100a::/64
+or
+DOCKER_OPTS="--dns 8.8.8.8 --dns 8.8.4.4 --ipv6 --fixed-cidr-v6=fd15:4ba5:5a2b:100a::/64"
+
+http://www.debug-all.com/?p=128
+

@@ -1,0 +1,131 @@
+Hi Jack,
+
+I reveived ssharma_env117.zip file for Intel Lab OpenVPN.
+On extracting this, it consists of 3 files-
+1) env117-inside.ovpn
+2) env117-outside.ovpn
+3) login-env117.txt
+
+I have tried to run the following steps on Ubuntu-
+1) extract this zip
+2) cd Linux
+3) sudo openvpn --config env117-outside.ovpn
+   It gives the following log-
+   tcs@3F4-0012B:~/Desktop/ssharma/Linux$ sudo openvpn --config env117-outside.ovpn 
+Wed Jul 13 12:30:31 2016 us=201345 Current Parameter Settings:
+Wed Jul 13 12:30:31 2016 us=201461   config = 'env117-outside.ovpn'
+Wed Jul 13 12:30:31 2016 us=201484   mode = 0
+Wed Jul 13 12:30:31 2016 us=201502   persist_config = DISABLED
+Wed Jul 13 12:30:31 2016 us=201520   persist_mode = 1
+Wed Jul 13 12:30:31 2016 us=201536   show_ciphers = DISABLED
+Wed Jul 13 12:30:31 2016 us=201554   show_digests = DISABLED
+Wed Jul 13 12:30:31 2016 us=201572   show_engines = DISABLED
+Wed Jul 13 12:30:31 2016 us=201589   genkey = DISABLED
+Wed Jul 13 12:30:31 2016 us=201606   key_pass_file = '[UNDEF]'
+Wed Jul 13 12:30:31 2016 us=201623   show_tls_ciphers = DISABLED
+Wed Jul 13 12:30:31 2016 us=201641 Connection profiles [default]:
+Wed Jul 13 12:30:31 2016 us=201659   proto = udp
+Wed Jul 13 12:30:31 2016 us=201676   local = '[UNDEF]'
+Wed Jul 13 12:30:31 2016 us=201693   local_port = 1194
+Wed Jul 13 12:30:31 2016 us=201710   remote = '[UNDEF]'
+Wed Jul 13 12:30:31 2016 us=201727   remote_port = 1194
+Wed Jul 13 12:30:31 2016 us=201743   remote_float = DISABLED
+Wed Jul 13 12:30:31 2016 us=201760   bind_defined = DISABLED
+Wed Jul 13 12:30:31 2016 us=201777   bind_local = DISABLED
+Wed Jul 13 12:30:31 2016 us=201795 NOTE: --mute triggered...
+Wed Jul 13 12:30:31 2016 us=201826 305 variation(s) on previous 20 message(s) suppressed by --mute
+Wed Jul 13 12:30:31 2016 us=201847 OpenVPN 2.3.2 x86_64-pc-linux-gnu [SSL (OpenSSL)] [LZO] [EPOLL] [PKCS11] [eurephia] [MH] [IPv6] built on Dec  1 2014
+Wed Jul 13 12:30:31 2016 us=201924 WARNING: file 'login-env117.txt' is group or others accessible
+Wed Jul 13 12:30:31 2016 us=202581 Control Channel MTU parms [ L:1557 D:138 EF:38 EB:0 ET:0 EL:0 ]
+Wed Jul 13 12:30:31 2016 us=202654 Socket Buffers: R=[212992->131072] S=[212992->131072]
+Wed Jul 13 12:30:31 2016 us=202697 Data Channel MTU parms [ L:1557 D:1450 EF:57 EB:4 ET:0 EL:0 ]
+Wed Jul 13 12:30:31 2016 us=202730 Local Options String: 'V4,dev-type tun,link-mtu 1557,tun-mtu 1500,proto UDPv4,cipher AES-128-CBC,auth SHA1,keysize 128,key-method 2,tls-client'
+Wed Jul 13 12:30:31 2016 us=202750 Expected Remote Options String: 'V4,dev-type tun,link-mtu 1557,tun-mtu 1500,proto UDPv4,cipher AES-128-CBC,auth SHA1,keysize 128,key-method 2,tls-server'
+Wed Jul 13 12:30:31 2016 us=202784 Local Options hash (VER=V4): '8326dbaa'
+Wed Jul 13 12:30:31 2016 us=202808 Expected Remote Options hash (VER=V4): 'b7f67de4'
+Wed Jul 13 12:30:31 2016 us=202829 UDPv4 link local: [undef]
+Wed Jul 13 12:30:31 2016 us=202858 UDPv4 link remote: [AF_INET]198.175.89.241:1194
+Wed Jul 13 12:31:32 2016 us=30500 TLS Error: TLS key negotiation failed to occur within 60 seconds (check your network connectivity)
+Wed Jul 13 12:31:32 2016 us=30603 TLS Error: TLS handshake failed
+Wed Jul 13 12:31:32 2016 us=30798 TCP/UDP: Closing socket
+Wed Jul 13 12:31:32 2016 us=30884 SIGUSR1[soft,tls-error] received, process restarting
+Wed Jul 13 12:31:32 2016 us=30936 Restart pause, 2 second(s)
+Wed Jul 13 12:31:34 2016 us=31109 Re-using SSL/TLS context
+Wed Jul 13 12:31:34 2016 us=31290 Control Channel MTU parms [ L:1559 D:140 EF:40 EB:0 ET:0 EL:0 ]
+Wed Jul 13 12:31:34 2016 us=31414 Socket Buffers: R=[87380->131072] S=[16384->131072]
+Wed Jul 13 12:31:34 2016 us=31461 Data Channel MTU parms [ L:1559 D:1450 EF:59 EB:4 ET:0 EL:0 ]
+Wed Jul 13 12:31:34 2016 us=31512 Local Options String: 'V4,dev-type tun,link-mtu 1559,tun-mtu 1500,proto TCPv4_CLIENT,cipher AES-128-CBC,auth SHA1,keysize 128,key-method 2,tls-client'
+
+4) sudo openvpn --config env117-inside.ovpn
+   It gives the follwoing log-
+   tcs@3F4-0012B:~/Desktop/ssharma/Linux$ sudo openvpn --config env117-inside.ovpn
+Wed Jul 13 12:30:52 2016 us=942490 Current Parameter Settings:
+Wed Jul 13 12:30:52 2016 us=942582   config = 'env117-inside.ovpn'
+Wed Jul 13 12:30:52 2016 us=942599   mode = 0
+Wed Jul 13 12:30:52 2016 us=942611   persist_config = DISABLED
+Wed Jul 13 12:30:52 2016 us=942624   persist_mode = 1
+Wed Jul 13 12:30:52 2016 us=942636   show_ciphers = DISABLED
+Wed Jul 13 12:30:52 2016 us=942648   show_digests = DISABLED
+Wed Jul 13 12:30:52 2016 us=942660   show_engines = DISABLED
+Wed Jul 13 12:30:52 2016 us=942672   genkey = DISABLED
+Wed Jul 13 12:30:52 2016 us=942684   key_pass_file = '[UNDEF]'
+Wed Jul 13 12:30:52 2016 us=942696   show_tls_ciphers = DISABLED
+Wed Jul 13 12:30:52 2016 us=942708 Connection profiles [default]:
+Wed Jul 13 12:30:52 2016 us=942721   proto = udp
+Wed Jul 13 12:30:52 2016 us=942732   local = '[UNDEF]'
+Wed Jul 13 12:30:52 2016 us=942744   local_port = 1194
+Wed Jul 13 12:30:52 2016 us=942757   remote = '[UNDEF]'
+Wed Jul 13 12:30:52 2016 us=942768   remote_port = 1194
+Wed Jul 13 12:30:52 2016 us=942780   remote_float = DISABLED
+Wed Jul 13 12:30:52 2016 us=942792   bind_defined = DISABLED
+Wed Jul 13 12:30:52 2016 us=942804   bind_local = DISABLED
+Wed Jul 13 12:30:52 2016 us=942816 NOTE: --mute triggered...
+Wed Jul 13 12:30:52 2016 us=942837 300 variation(s) on previous 20 message(s) suppressed by --mute
+Wed Jul 13 12:30:52 2016 us=942852 OpenVPN 2.3.2 x86_64-pc-linux-gnu [SSL (OpenSSL)] [LZO] [EPOLL] [PKCS11] [eurephia] [MH] [IPv6] built on Dec  1 2014
+Wed Jul 13 12:30:52 2016 us=942904 WARNING: file 'login-env117.txt' is group or others accessible
+Wed Jul 13 12:30:52 2016 us=943413 Control Channel MTU parms [ L:1559 D:140 EF:40 EB:0 ET:0 EL:0 ]
+Wed Jul 13 12:30:52 2016 us=943463 Socket Buffers: R=[87380->131072] S=[16384->131072]
+Wed Jul 13 12:31:33 2016 us=31782 RESOLVE: Cannot resolve host address: proxy-chain.intel.com: Temporary failure in name resolution
+Wed Jul 13 12:31:33 2016 us=31897 Data Channel MTU parms [ L:1559 D:1450 EF:59 EB:4 ET:0 EL:0 ]
+Wed Jul 13 12:31:33 2016 us=31981 Local Options String: 'V4,dev-type tun,link-mtu 1559,tun-mtu 1500,proto TCPv4_CLIENT,cipher AES-128-CBC,auth SHA1,keysize 128,key-method 2,tls-client'
+Wed Jul 13 12:31:33 2016 us=32018 Expected Remote Options String: 'V4,dev-type tun,link-mtu 1559,tun-mtu 1500,proto TCPv4_SERVER,cipher AES-128-CBC,auth SHA1,keysize 128,key-method 2,tls-server'
+Wed Jul 13 12:31:33 2016 us=32083 Local Options hash (VER=V4): '30065675'
+Wed Jul 13 12:31:33 2016 us=32129 Expected Remote Options hash (VER=V4): '37840390'
+Wed Jul 13 12:32:13 2016 us=62599 RESOLVE: Cannot resolve host address: proxy-chain.intel.com: Temporary failure in name resolution
+Wed Jul 13 12:32:13 2016 us=62769 TCP/UDP: Closing socket
+Wed Jul 13 12:32:13 2016 us=62858 SIGUSR1[soft,init_instance] received, process restarting
+Wed Jul 13 12:32:13 2016 us=62908 Restart pause, 5 second(s)
+Wed Jul 13 12:32:18 2016 us=63089 Re-using SSL/TLS context
+Wed Jul 13 12:32:18 2016 us=63266 Control Channel MTU parms [ L:1559 D:140 EF:40 EB:0 ET:0 EL:0 ]
+Wed Jul 13 12:32:18 2016 us=63378 Socket Buffers: R=[87380->131072] S=[16384->131072]
+Wed Jul 13 12:32:58 2016 us=93727 RESOLVE: Cannot resolve host address: proxy-chain.intel.com: Temporary failure in name resolution
+Wed Jul 13 12:32:58 2016 us=93837 Data Channel MTU parms [ L:1559 D:1450 EF:59 EB:4 ET:0 EL:0 ]
+Wed Jul 13 12:32:58 2016 us=93904 Local Options String: 'V4,dev-type tun,link-mtu 1559,tun-mtu 1500,proto TCPv4_CLIENT,cipher AES-128-CBC,auth SHA1,keysize 128,key-method 2,tls-client'
+Wed Jul 13 12:32:58 2016 us=93942 Expected Remote Options String: 'V4,dev-type tun,link-mtu 1559,tun-mtu 1500,proto TCPv4_SERVER,cipher AES-128-CBC,auth SHA1,keysize 128,key-method 2,tls-server'
+Wed Jul 13 12:32:58 2016 us=93998 Local Options hash (VER=V4): '30065675'
+Wed Jul 13 12:32:58 2016 us=94044 Expected Remote Options hash (VER=V4): '37840390'
+
+We tried on Windows by following the below steps-
+
+    Download the 64bit installer from this link http://openvpn.net/index.php/download/community-downloads.html
+    Run and install the OpenVPN client
+    The OpenVPN GUI icon -"Run this program as an administrator"
+Copy the two config files (env117-inside.ovpn and env117-outside.ovpn) to the config directory …
+    Copy the two config files to C:\Program Files\OpenVPN\config\ directory
+Run the client …
+    Run OpenVPN GUI as Administrator and it'll place itself on your icon tray
+Now it gives "connection failed" in a popup, without any logs
+
+
+Please guide us with the next steps, that can help us in troubleshooting this issue. I will drop you a mail also with the snapshots.
+
+
+
+
+Hi Yunhong,
+
+I have updated the Dockerfile for patch https://gerrit.opnfv.org/gerrit/#/c/16001/8 , where it will pull ubuntu:14.04.3 image for the docker and install the expected packages, before running both debian and rpm builds. I have tested this build process in our local environment.
+
+
+
+

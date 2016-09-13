@@ -1,0 +1,23 @@
+==========================
+Installation Instructions
+==========================
+
+
+This document will give the user instructions on how to "build" kvmfornfv packages for the Colorado release of the OPNFV platform.
+
+Build Files
+===========
+
+build.sh --> It is a single build file that triggers the build all packages (kernel and qemu, rpm and debian)
+kernel_deb_build.sh --> script used to build kernel debian packages
+qemu_deb_build.sh --> script used to build qemu debian packages
+kernel_rpm_build.sh --> script used to build kernel rpm packages
+qemu_rpm_build.sh --> script used to build qemu rpm packages
+
+Build Scenarios
+================
+
+Case 1 | builds rpm packages if -p package option is  passed as "centos" or in default case, by calling build_rpm subfolder files 
+Case 2 | builds debian packages if -p package option is  passed as "ubuntu", by calling build_deb
+subfolder files
+case 3 | Builds for both debian and rpm packages if -p package option is passed as "both"

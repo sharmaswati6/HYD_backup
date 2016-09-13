@@ -1,0 +1,95 @@
+1. Background:
+ 1.1. Build packages- Kernel rpm, Kernel deb, Qemu rpm, Qemu deb packages. The scripts for      generating this will be placed under opnfv kvmfornfv tree https://gerrit.opnfv.org/gerrit/#/admin/projects/kvmfornfv 
+ 1.2. According to http://artifacts.opnfv.org/octopus/docs/opnfv-ci-pipelines.html, we should provide verify, merge and daily jobs for the opnfv kvm tree. For this, a JJB job template like https://wiki.opnfv.org/octopus/jenkins_wow will be provided to the https://gerrit.opnfv.org/gerrit/#/admin/projects/releng
+
+2. Build package scripts: Work on the scripts under kvmfornfv tree for generating the build packages-
+ 2.1. Kernel rpm build script already available
+ 2.2. Work on Kernel debian builds creation
+ 2.3. Work on Qemu rpm builds creation
+ 2.4. Work on Qemu debian builds creation
+
+3. High level job execution:
+   a) The kernel/qemu rpm/deb packages pass the compilation.
+   b) The built-out package can be booted on both host and guest. The host means hardware with " Hardware requirements" on https://wiki.opnfv.org/pharos/pharos_specification. 
+   TBD: guest environment definition.
+   c) No obvious lantency added to cyclictest (https://rt.wiki.kernel.org/index.php/Cyclictest). We need define the "obvious latency". 
+
+4. Detailing the jobs: In the job template file , below are proposed testing scenarios:
+ 4.1. Verify Job- It includes the test for the patch verification and merge under separate setup, execute and teardown categories.
+  4.1.1. setup()-
+   4.1.1.1. Clone the changed kernel/qemu rpm/debian repository. Run the build scripts created in Step (2) on this changed repo and create new rpm/deb packages for kernel and qemu respectively. Store the created artifact/package on artifacts.opnfv.org
+   4.1.1.2. Automate the process of applying the built package (eg: *.rpm/ *.deb) on the host, boot the host and configure it. Provide the scripts to Octopus for supporting this feature. Some of the available scripts are-
+       a) host-setup0.sh
+       b) host-setup1.sh
+      TBD: Duration analysis of the host boot process
+      Note: If host booting or configuration setup scripts fail, the test fails.
+   4.1.1.3. Automate the process of applying the built package (eg: *.rpm/ *.deb) on the guest, boot the guest and configure it. Provide the scripts to Octopus for supporting this feature. Some of the available scripts are-
+       a) host-run-qemu.sh
+       b) guest-setup0.sh
+       c) guest-setup1.sh
+      TBD: Define the guest image
+      TBD: Duration analysis of the guest boot process
+      Note: If guest booting or configuration setup scripts fail, the test fails.
+  4.1.2. execute()-
+   4.1.2.1. Run cyclictest on the guest and check the result. 
+     TBD: Hardware feature may impact the cyclictest result. Hence, the base latency should be defined with this in mind. 
+     Note: If result exceeds the base latency, the test fails.
+   4.1.2.2. Steps that can be implemented for running Cyclictest  using Yardstick-:
+      a) Add support for cyclic test in Yardstick framework [Yardstick]
+      b) Write a test case using cyclic test – [Yardstick] + [KVM]
+      c) KVM package available in POD – [KVM]
+   4.1.2.3. Trigger the yardstick cyclictest scripts, after creating host-guest environment on Pharos.
+  4.1.3. teardown()-
+   4.1.3.1. At any point of time, if the test/scripts fail in steps (4.1.1) OR (4.1.2)-
+     a) Logs will be maintained to record the associated issues
+     b) Report Verified-1 against this change on Gerrit in order to prevent the merge and delete the recently tested built package from artifacts.opnfv.org
+   4.1.3.2. If the test/scripts execute successfully in steps (4.1.1) and (4.1.2), report Verified+1 against this change on Gerrit. Maintain this recently tested built package on artifacts.opnfv.org
+   4.1.3.3. Octopus support for reinstalling the previous kernel/qemu version on the test host should be made possible.
+ 4.2. Merge Job- Scripts need to be defined for automating the merge tasks. Octopus may assist in integrating these tasks into the CI/CD pipeline.
+   TBD: All merge tasks need to be defined.
+ 4.3. Daily Job-  
+This testing could be integrated to/executed by Yardstick and run in scope of the daily build/deploy/test CI loop. 
+  4.3.1. Testcases defined in (4.1.2.2--b) to be run as part of Yardstick daily Jenkins job 
+  4.3.2. [Yardstick] to added to job list, [KVM] to support troubleshooting if/when the test case fails - or testcase can be run as part of KVM Jenkings jobs
+
+4. TCS will have to automate the below 5 test scenarios for RT-Low Latency. Will be added more testcases in the time frame. VMs should be launched with CPU isolation, Core pinning and interrupt free.
+    4.1. Cyclic test using  https://rt.wiki.kernel.org/index.php/Cyclictest
+    4.2. SR-IOV scenario tests for L2 Forwarding using packetgen tool
+    4.3. OVSDPDK scenario tests L2 Forwarding using packetgen tool
+    4.4. Live migration scenario tests for L2 Forwarding using packetgen tool
+    4.5. Inter VM communication (after implementation is available)
+5. CyclicTest (4.1) is available in Yardstick. As on today, it is not getting executed automatically. TCS will add trigger after creating host environment with Pharos and make necessary changes in existing yardstick script
+6. Adding 4.2 & 4.3 to VSPerf git repo, 4.4 & 4.5 to FuncTest or Yardstick based on study & discussion.
+
+Future Work-
+
+The intention is to automate some scenarios for RT-Low Latency.
+
+After the test scenario of automatically implementing Cyclictest as part of the CICD process (on the host environment) is achieved, work will be carried out on the follwoing scenarios as well-
+4.1. SR-IOV scenario tests for L2 Forwarding using packetgen tool
+4.2. OVSDPDK scenario tests L2 Forwarding using packetgen tool
+4.3. Live migration scenario tests for L2 Forwarding using packetgen tool
+4.4. Inter VM communication (after implementation is available)
+Note: Add 4.1 & 4.2 to VSPerf git repo, 4.3 & 4.4 to FuncTest or Yardstick based on study & discussion.
+Note: VMs should be launched with CPU isolation, Core pinning and interrupt free.
+
+================================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 

@@ -1,0 +1,55 @@
+subprocess and os.system
+========================
+
+http://stackoverflow.com/questions/89228/calling-an-external-command-in-python
+
+
+python paths
+===============
+http://stackoverflow.com/questions/2589711/find-full-path-of-python-interpreter
+
+>>> os.environ['_']
+'/usr/bin/python'
+
+>>> import sys
+>>> sys.executable
+'/usr/bin/python'
+
+>>> whereis python
+
+check internet connection
+============================
+
+http://stackoverflow.com/questions/20913411/test-if-an-internet-connection-is-present-in-python
+
+install a python package on a system without internet connectionm
+=================================================================
+
+http://raspberrypi.stackexchange.com/questions/8644/how-do-i-download-the-python-libraries-without-a-direct-internet-connection-on-m
+http://stackoverflow.com/questions/8754520/how-to-install-python-from-source-without-internet-connection
+
+Signalling between the threads using 'Event' & Lock aquire
+==========================================================
+
+https://pymotw.com/2/threading/
+
+Python API
+================
+http://www.pythonforbeginners.com/api/python-api-and-json
+https://realpython.com/blog/python/api-integration-in-python/
+http://engineering.hackerearth.com/2014/08/21/python-requests-module/
+http://www.pythonforbeginners.com/requests/using-requests-in-python
+
+
+
+https://etherpad.opnfv.org/p/nfv-kvm-test
+https://gerrit.opnfv.org/gerrit/p/kvmfornfv.git
+http://artifacts.opnfv.org/kvmfornfv/docs/all/all.pdf
+http://artifacts.opnfv.org/octopus/docs/opnfv-ci-pipelines.html
+
+sudo ./build_fuel_plugin.sh 
+
+   34  sudo vim /etc/default/docker 
+   35  sudo service docker restart
+   37  ./pre_build_hook 
+

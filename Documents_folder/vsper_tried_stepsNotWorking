@@ -1,0 +1,113 @@
+
+gitCode Review / vswitchperf.git / blob
+? search: re
+summary | shortlog | log | commit | commitdiff | review | tree
+history | raw | HEAD
+Merge "dpdk: Support of DPDK16.07"
+[vswitchperf.git] / docs / quickstart.md
+   1 # Getting Started with 'vsperf'
+   2 
+   3 ## Hardware Requirements
+   4 VSPERF requires the following hardware to run tests: IXIA traffic generator (IxNetwork), a machine that runs the IXIA client software and a CentOS Linux release 7.1.1503 (Core) host.
+   5 
+   6 ## Installation
+   7 
+   8 Follow the [installation instructions] to install.
+   9 
+  10 ## IXIA Setup
+  11 ###On the CentOS 7 system
+  12 You need to install IxNetworkTclClient$(VER_NUM)Linux.bin.tgz.
+  13 
+  14 ### On the IXIA client software system
+  15 Find the IxNetwork TCL server app (start -> All Programs -> IXIA -> IxNetwork -> IxNetwork_$(VER_NUM) -> IxNetwork TCL Server)
+  16   - Right click on IxNetwork TCL Server, select properties
+  17   - Under shortcut tab in the Target dialogue box make sure there is the argument "-tclport xxxx" where xxxx is your port number (take note of this port number you will need it for the 10_custom.conf file).
+  18   ![Alt text](TCLServerProperties.png)
+  19   - Hit Ok and start the TCL server application
+  20 
+  21 ## Cloning and building src dependencies
+  22 In order to run VSPERF, you will need to download DPDK and OVS. You can do this manually and build them in a preferred location, or you could use vswitchperf/src. The vswitchperf/src directory contains makefiles that will allow you to clone and build the libraries that VSPERF depends on, such as DPDK and OVS. To clone and build simply:
+  23 
+  24 ```bash
+  25 cd src
+  26 make
+  27 ```
+  28 
+  29 To delete a src subdirectory and its contents to allow you to re-clone simply use:
+  30 
+  31 ```bash
+  32 make cleanse
+  33 ```
+  34 
+  35 ## Configure the `./conf/10_custom.conf` file
+  36 
+  37 The supplied `10_custom.conf` file must be modified, as it contains configuration items for which there are no reasonable default values.
+  38 
+  39 The configuration items that can be added is not limited to the initial contents. Any configuration item mentioned in any .conf file in `./conf` directory can be added and that item will be overridden by the custom
+  40 configuration value.
+  41 
+  42 ## Using a custom settings file
+  43 
+  44 Alternatively a custom settings file can be passed to `vsperf` via the `--conf-file` argument.
+  45 
+  46 ```bash
+  47 ./vsperf --conf-file <path_to_settings_py> ...
+  48 ```
+  49 
+  50 Note that configuration passed in via the environment (`--load-env`) or via another command line argument will override both the default and your custom configuration files. This "priority hierarchy" can be described like so (1 = max priority):
+  51 
+  52 1. Command line arguments
+  53 2. Environment variables
+  54 3. Configuration file(s)
+  55 
+  56 ---
+  57 
+  58 ## Executing tests
+  59 Before running any tests make sure you have root permissions by adding the following line to /etc/sudoers:
+  60 ```
+  61 username ALL=(ALL)       NOPASSWD: ALL
+  62 ```
+  63 username in the example above should be replaced with a real username.
+  64 
+  65 To list the available tests:
+  66 
+  67 ```bash
+  68 ./vsperf --list-tests
+  69 ```
+  70 
+  71 To run a group of tests, for example all tests with a name containing
+  72 'RFC2544':
+  73 
+  74 ```bash
+  75 ./vsperf --conf-file=user_settings.py --tests="RFC2544"
+  76 ```
+  77 
+  78 To run all tests:
+  79 
+  80 ```bash
+  81 ./vsperf --conf-file=user_settings.py
+  82 ```
+  83 
+  84 Some tests allow for configurable parameters, including test duration (in
+  85 seconds) as well as packet sizes (in bytes).
+  86 
+  87 ```bash
+  88 ./vsperf --conf-file user_settings.py
+  89     --tests RFC2544Tput
+  90     --test-param "rfc2544_duration=10;packet_sizes=128"
+  91 ```
+  92 
+  93 For all available options, check out the help dialog:
+  94 
+  95 ```bash
+  96 ./vsperf --help
+  97 ```
+  98 
+  99 ---
+ 100 
+ 101 [installation instructions]: installation.md
+ 102 
+Generic and architecture agnostic vSwitch testing framework
+RSS
+Atom
+

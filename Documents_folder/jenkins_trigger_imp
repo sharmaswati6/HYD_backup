@@ -1,0 +1,171 @@
+slave machine
+===============
+cloning changed kvmfornfv
+cloning fresh releng
+running kvm build
+host-setup0.sh
+host-setup1.sh
+
+install docker
+
+
+
+
+
+
+#!/bin/bash
+cd /home/tcs/test_jenkins_clone/
+rm -rf releng
+git clone https://gerrit.opnfv.org/gerrit/p/releng.git
+cd releng/jjb/kvmfornfv
+
+# making parameter changes in fresh clone of releng/jjb/kvmfornfv/kvmfornfv-build.sh script
+sed -i '/OUTPUT_DIR=$WORKSPACE\/build_output/i WORKSPACE=\/home\/tcs\/home\/tcs\/home\/tcs\/workspace\/kvm-gerrit\/test' kvmfornfv-build.sh
+chmod 755 ./kvmfornfv-build.sh
+
+# making parameter changes in changed clone of kvmfornfv/ci/build.sh script
+cd /home/tcs/home/tcs/home/tcs/workspace/kvm-gerrit/test/ci
+sed -i '3,5d' build.sh
+sed -i '/output_dir="$1"/i \
+rpmbuild_tmp="\/tmp" \
+rpmbuild_dir=$rpmbuild_tmp/kvmfornfv_rpmbuild.$$ \
+mkdir -p $rpmbuild_dir \
+artifact_rpms=$rpmbuild_dir\/RPMS \
+mkdir -p $artifact_rpms \
+artifact_dir=$artifact_rpms\/x86_64 \
+mkdir -p $artifact_dir \
+config_file="${kernel_src_dir}\/arch\/x86\/configs\/opnfv.config"' build.sh
+
+# run the kvmfornfv-build script finally
+cd /home/tcs/test_jenkins_clone/releng/jjb/kvmfornfv
+./kvmfornfv-build.sh
+
+# making necessary paramater changes to run host-setup0.sh
+cd /home/tcs/home/tcs/home/tcs/workspace/kvm-gerrit/test/ci/envs
+sed -i '/source host-config/i source \/home\/tcs\/home\/tcs\/home\/tcs\/workspace\/kvm-gerrit\/test\/ci\/envs\/host-config' host-setup0.sh
+sed -i '/^source host-config/ d' host-setup0.sh
+sed -i '/^rpmdir=/ d' host-setup0.sh
+sed -i '/^rpmpat=/ d' host-setup0.sh
+new_kernel_path=`ls -t /root/rpmbuild/SRPMS/ | head -n1`
+#echo $new_kernel_path
+sed -i '/config_grub () {/i \
+rpmdir=${1:-"\/root\/rpmbuild\/SRPMS\/"} \
+rpmpat='$new_kernel_path' \
+' host-setup0.sh
+sed -i '/grub2-mkconfig -o \/boot\/grub2\/grub.cfg/i grub2-mkconfig -o \/etc\/grub2-efi.cfg' host-setup0.sh
+sed -i '/^grub2-mkconfig -o \/boot\/grub2\/grub.cfg/ d' host-setup0.sh
+
+# run host-setup0.sh script finally
+./host-setup0.sh
+
+sed -i '/source host-config/i source \/home\/tcs\/home\/tcs\/home\/tcs\/workspace\/kvm-gerrit\/test\/ci\/envs\/host-config' host-setup1.sh
+sed -i '/^source host-config/ d' host-setup1.sh
+
+#run host-setup1.sh script finally
+./host-setup1.sh
+
+74  sudo yum install docker
+   75  systemctl start docker
+   76  systemctl status docker
+   77  systemctl status -l docker
+   78  systemctl enabledocker
+   79  systemctl enable docker
+   80  systemctl enable docker.service
+   81  docker run hello-world
+   82  docker version
+ sudo groupadd docker
+[sudo] password for tcs: 
+[tcs@localhost envs]$ sudo gpasswd -a ${USER} docker
+Adding user tcs to group docker
+[tcs@localhost envs]$ sudo service docker restart
+Redirecting to /bin/systemctl restart  docker.service
+[tcs@localhost envs]$ newgrp docker
+
+docker run  -di -v "/home/tcs/home/tcs/home/tcs/workspace/kvm-gerrit:/opt" centos_new /bin/bash
+sudo docker exec -it 631f6e8bdb0c /bin/bash
+cp -r /opt/test /home/tcs/home/tcs/home/tcs/workspace/kvm-gerrit/
+cd /home/tcs/test_jenkins_clone/
+./test_build.sh
+
+========================================================================================
+
+docker ps -a
+sudo docker exec -it 19530a64ef21 /bin/bash (to go inside container)
+
+1)prepare new image
+sudo docker commit 19530a64ef21 centos_rpm_new
+2) execute from jenkins 
+docker run  -i -v "$WORKSPACE:/opt" centos_rpm_new /bin/bash -c "cp -r /opt/test /home/tcs/home/tcs/home/tcs/workspace/kvm-gerrit/ && 
+cd /home/tcs/test_jenkins_clone/ && ./test_build.sh"
+
+==================================================================
+git push origin HEAD:refs/for/master
+
+
+ 2026  sudo docker pull centos
+ 2027  sudo docker ps -a
+ 2028  sudo docker images
+ 2030  sudo docker run -dit centos /bin/bash
+ 2031  sudo docker ps -a
+ 2035  sudo docker exec -it a7bdf7a7d78c /bin/bash
+ 2036  sudo docker ps -a
+ 2037  sudo docker commit 0d10068e70f6 centos_rpm_new
+ 2040  sudo docker images
+
+git push origin HEAD:refs/for/master
+
+
+
+"GAR\swatis1X", "swatis1X", ""swatix.sharma@intel.com"
+	
+
+pgmpo73@
+
+/home/tcs/kvmfornfv/fuel-plugin
+
+DIR="$(dirname `readlink -f $0`)"
+sudo docker cp 4f1804c44935:/root/linux-image-4.4.6-rt14nfv_1.0.OPNFV_amd64.deb ${DIR}/repositories/ubuntu/
+
+sudo docker cp ./fuel_slave/workspace/Jenkins_JJB_KVM_Testing 636df2afd6e0:/root/kvmfornfv
+
+kernel-4.4.6_rt14_1606131743nfv-4.src.rpm
+
+
+
+
+
+
+
+
+
+
+ Server_Name=50
+ if [ $Server_Name = 49 ]
+ then
+ echo "Server Name is 50"
+ else
+ echo "Server Name is below 50"
+ fi
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+

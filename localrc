@@ -1,0 +1,68 @@
+#[[local|localrc]]
+disable_service n-net
+disable_service tempest
+enable_service n-cauth
+enable_service q-svc
+enable_service q-agt
+enable_service q-dhcp
+enable_service q-l3
+enable_service q-meta
+enable_service quantum
+enable_service q-fwaas
+enable_service heat
+enable_service h-api
+enable_service h-api-cfn
+enable_service h-api-cw
+enable_service h-eng
+#enable_service swift
+#enable_service s-proxy s-object s-container s-account
+enable_service ceilometer-acompute,ceilometer-acentral,ceilometer-collector
+enable_service ceilometer-alarm-singleton,ceilometer-alarm-notifier
+enable_service ceilometer-api
+enable_service ceilometer-anotification
+#enable_service tempest
+enable_service ceilometer-cluster-collector
+enable_service rally
+enable_service tr-
+enable_service zaqar- ir-
+
+#RECLONE=yes
+#MULTI_HOST=1
+OFFLINE=True
+GIT_BASE=https://git.openstack.org
+#HOST_IP=192.168.122.125
+
+# Optional, to enable tempest configuration as part of devstack
+Q_PLUGIN=ml2
+ENABLE_TENANT_VLANS=True
+# GRE tunnel configuration
+Q_PLUGIN=ml2
+ENABLE_TENANT_TUNNELS=True
+
+# VXLAN tunnel configuration
+#Q_PLUGIN=ml2
+#Q_ML2_TENANT_NETWORK_TYPE=vxlan
+DATABASE_PASSWORD=openstack
+RABBIT_PASSWORD=openstack
+SERVICE_TOKEN=openstack
+SERVICE_PASSWORD=openstack
+ADMIN_PASSWORD=openstack
+LOG=True
+DEBUG=False
+LOGFILE=/opt/stack/logs/stack.sh.log
+LOGDIR=/opt/stack/logs
+LOG_DIR=/opt/stack/logs
+SCREEN_LOGDIR=/opt/stack/logs/screen
+#FLOATING_RANGE=10.3.4.0/22
+#FLOATING_RANGE=10.138.97.128/25
+#PUBLIC_NETWORK_GATEWAY=10.138.97.1
+#NOVNC_FROM_PACKAGE=False
+SWIFT_HASH=a344ccb715d35ceb0497
+
+#ML2 Details
+Q_PLUGIN=ml2
+#Q_ML2_PLUGIN_MECHANISM_DRIVERS=opendaylight
+#Q_ML2_TENANT_NETWORK_TYPE=vxlan
+#Q_ML2_PLUGIN_TYPE_DRIVERS=vxlan
+
+enable_service q-svc

@@ -1,0 +1,46 @@
+git clone https://git.openstack.org/openstack-infra/jenkins-job-builder
+
+pip install -r test-requirements.txt -e .
+
+
+
+
+Generally the sequence is:
+
+        parameters/properties
+        scm
+        triggers
+        wrappers
+        prebuilders (maven only, configured like Builders)
+        builders (maven, freestyle, matrix, etc..)
+        postbuilders (maven only, configured like Builders)
+        publishers/reporters/notifications
+
+
+
+
+
+wrote My JJB in 87 VM (inside RELENG)
+
+For reference using, JJB of 247 machine (/home/tcs/jyothi)
+
+apt-get install python-setuptools python-dev build-essential python-pip
+pip install --user jenkins-job-builder
+git clone https://git.openstack.org/openstack-infra/jenkins-job-builder
+pip install -r test-requirements.txt -e .
+
+jenkins-jobs --conf /etc/jenkins_jobs/jenkins_jobs.ini update kvm.yaml
+
+
+
+jenkins-jobs --conf /etc/jenkins_jobs/jenkins_jobs.ini update kvm.yaml
+
+
+
+
+
+jenkins-jobs test kvm.yaml
+jenkins-jobs --conf /etc/jenkins_jobs/jenkins_jobs.ini update kvm.yaml
+
+
+

@@ -1,0 +1,125 @@
+$$$$$$$$Tried in 180 machine$$$$$$$$$$$$$$$
+
+
+
+git config -l
+================
+
+user.email=swatix.sharma@intel.com
+user.name=swatisharma
+gitreview.remote=origin
+gitreview.username=swatisharma
+remote.gerrit.url=https://gerrit.opnfv.org/gerrit/kvmfornfv.git
+core.repositoryformatversion=0
+core.filemode=true
+core.bare=false
+core.logallrefupdates=true
+remote.origin.url=https://gerrit.opnfv.org/gerrit/kvmfornfv.git
+remote.origin.fetch=+refs/heads/*:refs/remotes/origin/*
+branch.master.remote=origin
+branch.master.merge=refs/heads/master
+
+1st time Gerrit Push
+=======================
+git checkout -b <branch>
+git status
+git add .
+git commit (mention Author and signed off inside)
+git push https://gerrit.opnfv.org/gerrit/kvmfornfv.git HEAD:refs/for/master
+(enter username from gerrit by generating)
+
+
+2nd time Gerrit Push
+===========================
+git push https://gerrit.opnfv.org/gerrit/kvmfornfv.git c79944408b0a4c276aab466c847d7b8a9ae194db:refs/changes/16045
+
+
+Co-Authored-By: name <name@example.com>
+git commit --amend --author="Swati Sharma <swatix.sharma@intel.com>"
+git commit --amend --co-author="Gundarapu Reddy <reddyx.gundarapu@intel.com>"
+
+If too many changes have been merged in master by someone else, and you want to update your code with that also before merging,
+==============================
+
+git checkout master
+git pull origin master
+git branch (check u will b in master)
+
+git checkout test (switch to ur old branch now)
+git rebase master
+(your branch is now updated with the new changes synced in master)
+
+
+
+Push in Madhavi's gerrit Directory
+==================================
+
+1st patch
++++++++++++
+create a project directly on the Gerrit UI -"KVMforNFV"
+git clone http://madhavi@10.138.77.57:8090/KVMforNFV
+cd KVMforNFV/
+git clone https://gerrit.opnfv.org/gerrit/kvmfornfv.git (clone kvmfornfv from web here)
+git add .
+git commit -m "first"
+git push origin master (now the actual web directory comes in Gerrit)
+
+clone this one now- git clone http://madhavi@10.138.77.57:8090/KVMforNFV dummy_kvmfornfv
+delete the previos one- rm -rf KVMforNFV
+for better naming convention change the name-- mv dummy_kvmfornfv KVMforNFV
+(make the expected new changes now)
+git add <files>
+git commit -m 'changes made for patch1'
+git push origin HEAD:refs/for/master
+
+2nd-- 
+++++
+git commit --amend
+git log -1
+git push http://madhavi@10.138.77.57:8090/kvmfornfv_aug 2cbbdda45b7721596115168c00aa1cd07173ee83:refs/changes/663
+
+
+
+
+OPNFV KVM4NFV: Fuel-plugin scripts for deb and rpm builds creation
+==================================================================
+
+These scripts will be used to build kernel-rpm and kernel-deb
+builds inside ubuntu docker (from the changed kernel code in 
+kvm4nfv). After the builds are ready, they will be deployed on
+the pharos testbed to verify the created builds.
+92f4e8e0
+
+ssharma@env117
+GxdSNFjY
+
+
+Crdentials
+===============
+
+Intel Email: swatis1x/ Swat@4321
+Launchpad: swatisharma/ swatix.sharma@intel.com/ Swati@062016
+
+Run JJB in 57 machine JJB-container
+=======================================
+jenkins-jobs test kvm.yml
+jenkins-jobs --conf /etc/jenkins_jobs/jenkins_jobs.ini update kvm.yml
+$GERRIT_REFSPEC
+
+
+http://madhavi@10.138.77.57:8090/KVMforNFV refs/changes/13/713/1
+
+refs/changes/*:refs/changes/*
+refs/changes/13/713/1:refs/changes/13/713/1
+
+refspec---- $GERRIT_REFSPEC
+checkout to local subdir ---- test
+Gerrit trigger server ----Any server
+ssh _creds
+subdir
+
+
+http://www.pythonlearn.com/html-007/cfbook016.html
+www.pythonlearn.com
+https://automatetheboringstuff.com/
+

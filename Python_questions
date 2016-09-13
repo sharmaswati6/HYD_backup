@@ -1,0 +1,36 @@
+ans:
+1)
+def max(var1,var2):
+    if var1>var2:
+	return var1
+    else:
+	return var2
+max(5,10)
+2)
+def find():
+    str1="You are learning Python"
+    word="Python"
+    temp=str1.split()
+    flag=0
+    for str2 in temp:
+        if str2==word:
+           flag=1
+           print "the word is present in the string"
+    if flag==0:
+        print "the word is not there in the string"
+
+find()
+
+3)
+def check()
+    num = float(input("Enter a number: "))
+    if num > 0:
+	print("Positive number")
+    elif num == 0:
+        print("Zero")
+    else:
+        print("Negative number")
+     
+		
+
+

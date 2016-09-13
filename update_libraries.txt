@@ -1,0 +1,22 @@
+cd /tmp
+wget http://launchpadlibrarian.net/181218309/libiscsi2_1.12.0-2_amd64.deb
+wget http://launchpadlibrarian.net/181218310/libiscsi-dev_1.12.0-2_amd64.deb
+
+wget http://launchpadlibrarian.net/227668615/libnspr4_4.11-1ubuntu1_amd64.deb
+wget http://launchpadlibrarian.net/227668614/libnspr4-dev_4.11-1ubuntu1_amd64.deb
+wget http://launchpadlibrarian.net/247259842/libnss3_3.21-1ubuntu4_amd64.deb
+wget http://launchpadlibrarian.net/247259839/libnss3-nssdb_3.21-1ubuntu4_all.deb
+wget http://launchpadlibrarian.net/247259838/libnss3-dev_3.21-1ubuntu4_amd64.deb
+wget http://launchpadlibrarian.net/228233158/libcacard0_2.5.0-2_amd64.deb
+wget http://launchpadlibrarian.net/228233154/libcacard-dev_2.5.0-2_amd64.deb
+
+sudo dpkg -i libiscsi2_1.12.0-2_amd64.deb
+sudo dpkg -i libiscsi-dev_1.12.0-2_amd64.deb 
+sudo dpkg -i libnspr4_4.11-1ubuntu1_amd64.deb
+sudo dpkg -i libnspr4-dev_4.11-1ubuntu1_amd64.deb
+sudo dpkg -i libnss3_3.21-1ubuntu4_amd64.deb
+sudo dpkg -i libnss3-nssdb_3.21-1ubuntu4_all.deb
+sudo dpkg -i libnss3-dev_3.21-1ubuntu4_amd64.deb
+sudo dpkg -i libcacard0_2.5.0-2_amd64.deb
+sudo dpkg -i libcacard-dev_2.5.0-2_amd64.deb
+	
